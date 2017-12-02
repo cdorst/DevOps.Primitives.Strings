@@ -1,9 +1,7 @@
 ﻿using Common.EntityFrameworkServices.Services;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Data.HashFunction.xxHash;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DevOps.Primitives.Strings.EntityFramework.Services
@@ -11,24 +9,17 @@ namespace DevOps.Primitives.Strings.EntityFramework.Services
     public class AsciiMaxStringReferenceUpsertService<TDbContext> : UpsertService<TDbContext, AsciiMaxStringReference>
         where TDbContext : UniqueStringsDbContext
     {
-        private readonly IUpsertService<TDbContext, AsciiStringReference> _strings;
+        private readonly IMaxStringHashService _hash;
 
-        public AsciiMaxStringReferenceUpsertService(ICacheService<AsciiMaxStringReference> cache, TDbContext database, ILogger<UpsertService<TDbContext, AsciiMaxStringReference>> logger, IUpsertService<TDbContext, AsciiStringReference> strings)
+        public AsciiMaxStringReferenceUpsertService(ICacheService<AsciiMaxStringReference> cache, TDbContext database, ILogger<UpsertService<TDbContext, AsciiMaxStringReference>> logger, IMaxStringHashService hash)
             : base(cache, database, logger, database.AsciiMaxStringReferences)
         {
             CacheKey = record => $"StringReferences.{nameof(AsciiMaxStringReference)}={record.HashId}";
-            _strings = strings ?? throw new ArgumentNullException(nameof(strings));
+            _hash = hash ?? throw new ArgumentNullException(nameof(hash));
         }
 
         protected override async Task<AsciiMaxStringReference> AssignUpsertedReferences(AsciiMaxStringReference record)
-        {
-            var hashString = xxHashFactory.Instance.Create().ComputeHash(Encoding.UTF8.GetBytes(record.Value)).AsBase64String();
-            var hash = new AsciiStringReference { Value = hashString };
-            hash = await _strings.UpsertAsync(hash);
-            record.Hash = hash;
-            record.HashId = hash.AsciiStringReferenceId;
-            return record;
-        }
+            => (await _hash.UpsertComputedHash(record)) as AsciiMaxStringReference;
 
         protected override Expression<Func<AsciiMaxStringReference, bool>> FindExisting(AsciiMaxStringReference record)
             => existing => existing.Hash == record.Hash;

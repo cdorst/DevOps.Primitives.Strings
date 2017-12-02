@@ -1,18 +1,19 @@
-﻿using DevOps.Abstractions.Core;
-using DevOps.Abstractions.Core.Services;
+﻿using Common.EntityFrameworkServices.Services;
 using DevOps.Primitives.Strings.EntityFramework.Services;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DevOps.Primitives.Strings.EntityFramework
 {
     public static class AddUniqueStringsServicesExtension
     {
-        public static IServiceCollection AddUniqueStringsServices<TDbContext>(this IServiceCollection serviceCollection, IConfiguration config)
+        public static IServiceCollection AddUniqueStringsServices<TDbContext>(this IServiceCollection serviceCollection)
             where TDbContext : UniqueStringsDbContext
             => serviceCollection
-                .AddDbConfiguration<TDbContext>(config)
+                .AddGenericServices()
+                .AddScoped<IMaxStringHashService, MaxStringHashService<TDbContext>>()
+                .AddScoped<IUpsertService<TDbContext, AsciiMaxStringReference>, AsciiMaxStringReferenceUpsertService<TDbContext>>()
                 .AddScoped<IUpsertService<TDbContext, AsciiStringReference>, AsciiStringReferenceUpsertService<TDbContext>>()
+                .AddScoped<IUpsertService<TDbContext, UnicodeMaxStringReference>, UnicodeMaxStringReferenceUpsertService<TDbContext>>()
                 .AddScoped<IUpsertService<TDbContext, UnicodeStringReference>, UnicodeStringReferenceUpsertService<TDbContext>>();
     }
 }

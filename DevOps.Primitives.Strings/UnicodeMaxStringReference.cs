@@ -8,7 +8,7 @@ namespace DevOps.Primitives.Strings
 {
     [ProtoContract]
     [Table("UnicodeMaxStringReferences", Schema = "StringReferences")]
-    public class UnicodeMaxStringReference
+    public class UnicodeMaxStringReference : IMaxStringReference
     {
         public UnicodeMaxStringReference() { }
         public UnicodeMaxStringReference(string input) { Value = input; }

@@ -6,7 +6,7 @@ namespace DevOps.Primitives.Strings
 {
     [ProtoContract]
     [Table("AsciiMaxStringReferences", Schema = "StringReferences")]
-    public class AsciiMaxStringReference
+    public class AsciiMaxStringReference : IMaxStringReference
     {
         public AsciiMaxStringReference() { }
         public AsciiMaxStringReference(string input) { Value = input; }
