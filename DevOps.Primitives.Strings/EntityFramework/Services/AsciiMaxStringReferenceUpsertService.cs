@@ -9,9 +9,9 @@ namespace DevOps.Primitives.Strings.EntityFramework.Services
     public class AsciiMaxStringReferenceUpsertService<TDbContext> : UpsertService<TDbContext, AsciiMaxStringReference>
         where TDbContext : UniqueStringsDbContext
     {
-        private readonly IMaxStringHashService _hash;
+        private readonly IMaxStringHashService<TDbContext> _hash;
 
-        public AsciiMaxStringReferenceUpsertService(ICacheService<AsciiMaxStringReference> cache, TDbContext database, ILogger<UpsertService<TDbContext, AsciiMaxStringReference>> logger, IMaxStringHashService hash)
+        public AsciiMaxStringReferenceUpsertService(ICacheService<AsciiMaxStringReference> cache, TDbContext database, ILogger<UpsertService<TDbContext, AsciiMaxStringReference>> logger, IMaxStringHashService<TDbContext> hash)
             : base(cache, database, logger, database.AsciiMaxStringReferences)
         {
             CacheKey = record => $"StringReferences.{nameof(AsciiMaxStringReference)}={record.HashId}";

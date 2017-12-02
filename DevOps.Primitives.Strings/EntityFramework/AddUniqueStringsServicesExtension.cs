@@ -10,7 +10,7 @@ namespace DevOps.Primitives.Strings.EntityFramework
             where TDbContext : UniqueStringsDbContext
             => serviceCollection
                 .AddGenericServices()
-                .AddScoped<IMaxStringHashService, MaxStringHashService<TDbContext>>()
+                .AddScoped<IMaxStringHashService<TDbContext>, MaxStringHashService<TDbContext>>()
                 .AddScoped<IUpsertService<TDbContext, AsciiMaxStringReference>, AsciiMaxStringReferenceUpsertService<TDbContext>>()
                 .AddScoped<IUpsertService<TDbContext, AsciiStringReference>, AsciiStringReferenceUpsertService<TDbContext>>()
                 .AddScoped<IUpsertService<TDbContext, UnicodeMaxStringReference>, UnicodeMaxStringReferenceUpsertService<TDbContext>>()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DevOps.Primitives.Strings.EntityFramework.Services
 {
-    public class MaxStringHashService<TDbContext> : IMaxStringHashService
+    public class MaxStringHashService<TDbContext> : IMaxStringHashService<TDbContext>
         where TDbContext : UniqueStringsDbContext
     {
         private readonly ILogger<MaxStringHashService<TDbContext>> _logger;
