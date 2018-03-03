@@ -1,4 +1,5 @@
-﻿using ProtoBuf;
+﻿using Common.EntityFrameworkServices;
+using ProtoBuf;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,7 +7,7 @@ namespace DevOps.Primitives.Strings
 {
     [ProtoContract]
     [Table("AsciiStringReferences", Schema = "StringReferences")]
-    public class AsciiStringReference
+    public class AsciiStringReference : IUniqueListRecord
     {
         public AsciiStringReference() { }
         public AsciiStringReference(string input)
