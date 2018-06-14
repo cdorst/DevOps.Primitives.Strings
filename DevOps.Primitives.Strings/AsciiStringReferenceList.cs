@@ -2,6 +2,7 @@
 using Common.EntityFrameworkServices.Factories;
 using ProtoBuf;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevOps.Primitives.Strings
@@ -10,6 +11,7 @@ namespace DevOps.Primitives.Strings
     [Table("AsciiStringReferenceLists", Schema = "StringReferences")]
     public class AsciiStringReferenceList : IUniqueList<AsciiStringReference, AsciiStringReferenceListAssociation>
     {
+        [Key]
         [ProtoMember(1)]
         public int AsciiStringReferenceListId { get; set; }
 
@@ -23,7 +25,7 @@ namespace DevOps.Primitives.Strings
 
         public List<AsciiStringReferenceListAssociation> GetAssociations() => AsciiStringReferenceListAssociations;
 
-        public void SetRecords(List<AsciiStringReference> records)
+        public void SetRecords(in List<AsciiStringReference> records)
         {
             AsciiStringReferenceListAssociations = UniqueListAssociationsFactory<AsciiStringReference, AsciiStringReferenceListAssociation>.Create(records);
             ListIdentifier = new AsciiStringReference(

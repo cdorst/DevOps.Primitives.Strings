@@ -9,7 +9,8 @@ namespace DevOps.Primitives.Strings
     public class AsciiMaxStringReference : IMaxStringReference
     {
         public AsciiMaxStringReference() { }
-        public AsciiMaxStringReference(string input) { Value = input; }
+        public AsciiMaxStringReference(in string input) { Value = input; }
+
         [Key]
         [ProtoMember(1)]
         public int AsciiMaxStringReferenceId { get; set; }

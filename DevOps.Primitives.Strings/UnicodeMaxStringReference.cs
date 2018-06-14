@@ -11,12 +11,10 @@ namespace DevOps.Primitives.Strings
     public class UnicodeMaxStringReference : IMaxStringReference
     {
         public UnicodeMaxStringReference() { }
-        public UnicodeMaxStringReference(string input) { Value = input; }
-        public UnicodeMaxStringReference(StringBuilder stringBuilder)
-        {
-            Value = stringBuilder?.ToString()
+        public UnicodeMaxStringReference(in string input) => Value = input;
+        public UnicodeMaxStringReference(in StringBuilder stringBuilder)
+            => Value = stringBuilder?.ToString()
                 ?? throw new ArgumentNullException(nameof(stringBuilder));
-        }
 
         [Key]
         [ProtoMember(1)]
